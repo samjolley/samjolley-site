@@ -64,7 +64,7 @@ Do not disable HTTPS or proxy protections as a shortcut.
 
 | Item | Location | Status |
 | --- | --- | --- |
-| Contact path (email or form) | `src/layouts/Base.astro` footer | Done 2026-06-12: `hello@zerobeatlabs.org` (live); switch to `hello@samjolley.com` once that mailbox is confirmed |
+| Contact path (email or form) | `src/layouts/Base.astro` footer | Done 2026-06-12: `zerobeatlabs@proton.me`; switch to a `hello@` address once that mailbox is confirmed |
 | GitHub links for projects | `src/pages/work.astro`, `src/content/work/*.md` | Needs Sam to pick repositories |
 | Reporting-workflow demo repo link | `src/content/work/it-operations-reporting-workflow.md` | Pending public release of the demo repo |
 | Career history on `/about/` | `src/pages/about.astro` comment | Needs approved resume-derived copy |
