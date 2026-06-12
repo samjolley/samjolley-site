@@ -1,0 +1,12 @@
+{
+  "name": "Sam Jolley",
+  "short_name": "Sam Jolley",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#14605f",
+  "background_color": "#fdfdfd",
+  "display": "browser",
+  "start_url": "/"
+}
