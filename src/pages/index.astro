@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const work = (await getCollection('work')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<Base
+  title="Sam Jolley — IT operations, automation, and hands-on engineering"
+  description="I lead and document practical technology work across network infrastructure, operational workflows, embedded systems, and human-reviewed AI automation."
+>
+  <section aria-labelledby="hero-heading">
+    <h1 id="hero-heading">IT operations, automation, and hands-on engineering</h1>
+    <p class="lede">
+      I lead and document practical technology work across network
+      infrastructure, operational workflows, embedded systems, and
+      human-reviewed AI automation.
+    </p>
+    <div class="cta-row">
+      <a class="button primary" href="/work/">View selected work</a>
+      <a class="button secondary" href="https://zerobeatlabs.org">Explore ZeroBeatLabs</a>
+    </div>
+  </section>
+
+  <section aria-labelledby="work-heading">
+    <h2 id="work-heading">Selected Work</h2>
+    <ul class="card-list">
+      {
+        work.map((item) => (
+          <li>
+            <h3>{item.data.title}</h3>
+            {item.data.synthetic && <p class="badge">Synthetic demonstration</p>}
+            <p>{item.data.summary}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section aria-labelledby="about-heading">
+    <h2 id="about-heading">About</h2>
+    <p>
+      I am an IT operations leader and hands-on technologist. My work centers
+      on making complex systems understandable, supportable, and safer to
+      operate. I use automation where it removes repeat work, while keeping
+      human judgment in consequential decisions.
+    </p>
+  </section>
+</Base>
