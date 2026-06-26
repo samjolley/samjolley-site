@@ -15,6 +15,21 @@ const navItems = [
   { href: '/about/', label: 'About' },
 ];
 const currentPath = Astro.url.pathname.replace(/\/?$/, '/');
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Sam Jolley',
+  url: 'https://samjolley.com',
+  jobTitle: 'IT operations and automation engineer',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'ZeroBeatLabs',
+    url: 'https://zerobeatlabs.org',
+  },
+  // sameAs: list only live profiles. Add each as it is claimed.
+  sameAs: ['https://github.com/samjolley'],
+};
 ---
 
 <!doctype html>
@@ -40,6 +55,7 @@ const currentPath = Astro.url.pathname.replace(/\/?$/, '/');
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={title} />
     <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
