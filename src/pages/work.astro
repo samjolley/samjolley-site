@@ -15,7 +15,7 @@ const workEntries = await Promise.all(
 
 <Base
   title="Work — Sam Jolley"
-  description="Selected projects: IT operations reporting, custom keyboard hardware, and operational security architecture."
+  description="Selected projects across IT operations reporting, custom keyboard hardware, operational security, RC and drone systems, and self-hosted infrastructure."
 >
   <h1>Work</h1>
   <p class="lede">
@@ -27,7 +27,7 @@ const workEntries = await Promise.all(
       workEntries.map(({ item, Content }) => (
         <article class="work-item">
           <h2>{item.data.title}</h2>
-          {item.data.synthetic && <p class="badge">Synthetic demonstration</p>}
+          {item.data.synthetic && <p class="badge">Sample demonstration</p>}
           <p class="summary">{item.data.summary}</p>
           <div class="work-body">
             <Content />
