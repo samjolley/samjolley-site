@@ -1,11 +1,11 @@
 ---
 title: IT Operations Reporting Workflow
-summary: A synthetic demonstration of a human-reviewed reporting workflow for turning ticket and uptime exports into a reconciled leadership report.
+summary: A sample demonstration of a human-reviewed reporting workflow for turning ticket and uptime exports into a reconciled leadership report.
 order: 1
 synthetic: true
 ---
 
-This is a personal portfolio case study in practical AI governance and IT operations reporting. It uses fictional data, not employer data, client data, or a paid engagement.
+This is a personal portfolio case study in practical AI governance and IT operations reporting. It uses sample data, not employer data, client data, or a paid engagement.
 
 ## Why I Built It
 
@@ -17,7 +17,7 @@ I built this demonstration to show a more reliable pattern: deterministic calcul
 
 ## What The Demo Uses
 
-The sample uses two fictional exports:
+The demo uses two sample exports:
 
 - 24 service tickets
 - availability records for seven services
@@ -55,4 +55,4 @@ That boundary is the point. For consequential IT work, I want AI assisting the p
 
 This project does not claim paid client delivery, production scalability, vendor-specific integrations, guaranteed time savings, or autonomous operation. Those claims require real deployments and measured evidence.
 
-It is a synthetic demonstration of how I think about responsible automation: scope the workflow, separate calculation from generation, document the review process, and keep a human accountable for the final decision.
+It is a sample demonstration of how I think about responsible automation: scope the workflow, separate calculation from generation, document the review process, and keep a human accountable for the final decision.
