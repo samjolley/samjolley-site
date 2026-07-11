@@ -4,7 +4,8 @@ import type { APIContext } from 'astro';
 
 export async function GET(context: APIContext) {
   const posts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
-    (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+    (a, b) =>
+      b.data.pubDate.getTime() - a.data.pubDate.getTime() || a.id.localeCompare(b.id),
   );
 
   return rss({
