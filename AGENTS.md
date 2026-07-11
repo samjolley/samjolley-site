@@ -6,18 +6,33 @@ Conventions for AI coding agents (Claude Code, Codex) editing this repository.
 
 - **Astro 5 + TypeScript, fully static** (`output: 'static'`), no client-side
   framework, no runtime JavaScript beyond what Astro emits for static pages.
-- Routes are file-based: `src/pages/index.astro`, `work.astro`, `about.astro`.
-  The launch sitemap is exactly these three routes — do not add pages without
-  an explicit request.
-- `src/layouts/Base.astro` owns `<head>` metadata, nav, footer, and the skip
-  link. Page files own their own content only.
-- `src/content/work/` is an Astro content collection (schema in
-  `src/content.config.ts`). Adding a work entry = adding one Markdown file.
+- Routes are file-based:
+  - `src/pages/index.astro` (home), `about.astro`, `privacy.astro`, `404.astro`.
+  - `src/pages/work/index.astro` (portfolio index) and
+    `src/pages/work/[slug].astro` (one page per work entry, at `/work/<slug>/`).
+  - `src/pages/writing/index.astro` and `src/pages/writing/[slug].astro`
+    (the `writing` content collection). This section can be empty.
+  - `src/pages/rss.xml.ts` (writing feed at `/rss.xml`).
+  Adding a work or writing entry is just a new Markdown file in the matching
+  `src/content/` folder. Adding a whole new top-level section still needs an
+  explicit request from Sam.
+- `src/layouts/Base.astro` owns `<head>` metadata (title, description,
+  canonical, OG/Twitter, RSS alternate, the site-wide `Person` JSON-LD, and an
+  optional per-page `structuredData` prop), nav, footer, and the skip link.
+  Page files own their own content only. Work pages pass a `CreativeWork`
+  object (portfolio pieces are undated, so no `datePublished` is fabricated);
+  writing pages pass a `BlogPosting` object.
+- `src/content/work/` and `src/content/writing/` are Astro content collections
+  (schemas in `src/content.config.ts`). Writing drafts (`draft: true`) render
+  in `dev` for review but are excluded from production builds, so they never
+  reach the sitemap or RSS feed.
 - `src/styles/global.css` holds all design tokens as CSS custom properties.
   Retheme by editing tokens, not by scattering new color literals.
+- **Sitemap is generated, never hand-edited.** `@astrojs/sitemap` emits
+  `sitemap-index.xml` + `sitemap-0.xml` from the built routes. Do not add a
+  static `public/sitemap.xml`; it would drift the moment routes change.
 - `public/` is copied verbatim into the build: `CNAME`, `robots.txt`,
-  `sitemap.xml` (hand-maintained — update it if routes ever change),
-  `favicon.svg`.
+  `favicon.svg`, icons, `og.png`.
 
 ## Safe-editing rules
 

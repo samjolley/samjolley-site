@@ -1,0 +1,68 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const work = await getCollection('work');
+  return work.map((item) => ({ params: { slug: item.id }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// CreativeWork, not Article/BlogPosting: these are undated portfolio write-ups,
+// so there is no honest datePublished to claim.
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: item.data.title,
+  description: item.data.summary,
+  author: { '@type': 'Person', name: 'Sam Jolley', url: 'https://samjolley.com' },
+  mainEntityOfPage: canonical.href,
+  ...(item.data.keywords.length > 0 && { keywords: item.data.keywords.join(', ') }),
+};
+---
+
+<Base
+  title={`${item.data.title} | Sam Jolley`}
+  description={item.data.summary}
+  structuredData={structuredData}
+>
+  <article class="work">
+    {item.data.synthetic && <p class="badge">Sample demonstration</p>}
+    <h1>{item.data.title}</h1>
+    <p class="summary">{item.data.summary}</p>
+    <div class="work-body">
+      <Content />
+    </div>
+    <p class="back"><a href="/work/">&larr; All work</a></p>
+  </article>
+</Base>
+
+<style>
+  .work {
+    max-width: var(--measure);
+  }
+
+  .summary {
+    color: var(--color-ink-muted);
+    font-size: var(--text-lg);
+  }
+
+  .work-body :global(ul),
+  .work-body :global(ol) {
+    padding-left: var(--space-3);
+  }
+
+  .work-body :global(li) {
+    margin-bottom: var(--space-1);
+  }
+
+  .back {
+    margin-top: var(--space-5);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-3);
+  }
+</style>

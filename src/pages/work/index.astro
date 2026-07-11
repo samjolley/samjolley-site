@@ -1,15 +1,9 @@
 ---
-import Base from '../layouts/Base.astro';
-import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
 
 const work = (await getCollection('work')).sort(
   (a, b) => a.data.order - b.data.order,
-);
-const workEntries = await Promise.all(
-  work.map(async (item) => ({
-    item,
-    Content: (await render(item)).Content,
-  })),
 );
 ---
 
@@ -22,55 +16,58 @@ const workEntries = await Promise.all(
     Selected public-safe work across IT operations, automation, infrastructure,
     and hands-on engineering.
   </p>
-  <div class="work-list">
+  <ul class="work-list">
     {
-      workEntries.map(({ item, Content }) => (
-        <article class="work-item">
-          <h2>{item.data.title}</h2>
+      work.map((item) => (
+        <li>
           {item.data.synthetic && <p class="badge">Sample demonstration</p>}
+          <h2>
+            <a href={`/work/${item.id}/`}>{item.data.title}</a>
+          </h2>
           <p class="summary">{item.data.summary}</p>
-          <div class="work-body">
-            <Content />
-          </div>
-        </article>
+        </li>
       ))
     }
-  </div>
+  </ul>
 </Base>
 
 <style>
   .work-list {
+    list-style: none;
+    margin: var(--space-4) 0 0;
+    padding: 0;
     display: grid;
     gap: var(--space-4);
-    margin-top: var(--space-4);
   }
 
-  .work-item {
+  .work-list li {
     border-top: 1px solid var(--color-border);
     padding-top: var(--space-4);
   }
 
-  .work-item:first-child {
+  .work-list li:first-child {
     border-top: 0;
     padding-top: 0;
   }
 
-  .work-item h2 {
-    margin-top: 0;
+  .work-list h2 {
+    margin: 0 0 var(--space-1);
+  }
+
+  .work-list h2 a {
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .work-list h2 a:hover {
+    color: var(--color-accent-strong);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 
   .summary {
     color: var(--color-ink-muted);
     font-size: var(--text-lg);
-  }
-
-  .work-body :global(ul),
-  .work-body :global(ol) {
-    max-width: var(--measure);
-    padding-left: var(--space-3);
-  }
-
-  .work-body :global(li) {
-    margin-bottom: var(--space-1);
+    margin-bottom: 0;
   }
 </style>

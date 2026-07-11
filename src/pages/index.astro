@@ -30,7 +30,7 @@ const work = (await getCollection('work')).sort(
       {
         work.map((item) => (
           <li>
-            <h3>{item.data.title}</h3>
+            <h3><a href={`/work/${item.id}/`}>{item.data.title}</a></h3>
             {item.data.synthetic && <p class="badge">Sample demonstration</p>}
             <p>{item.data.summary}</p>
           </li>

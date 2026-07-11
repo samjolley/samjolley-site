@@ -1,0 +1,2 @@
+# Writing collection. Add articles as `<slug>.md` with frontmatter:
+# title, description, pubDate, optional draft/keywords (see src/content.config.ts).
