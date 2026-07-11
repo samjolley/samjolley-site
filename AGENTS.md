@@ -1,4 +1,4 @@
-# Agent guide — samjolley-site
+# Agent guide: samjolley-site
 
 Conventions for AI coding agents (Claude Code, Codex) editing this repository.
 
@@ -44,11 +44,11 @@ Conventions for AI coding agents (Claude Code, Codex) editing this repository.
    block come from Sam's vault. Do not paraphrase or "improve" them.
 3. **Synthetic work is labeled.** Any demo built on fictional data keeps
    `synthetic: true` in its frontmatter so the badge renders.
-4. **No service pricing, offer FAQs, or sales process here** — that content
+4. **No service pricing, offer FAQs, or sales process here.** That content
    belongs on zerobeatlabs.org. This site links out instead.
 5. **No analytics, tracking, cookies, third-party embeds, or external fonts.**
 6. **No secrets** anywhere in the repo.
-7. Every link must have a valid destination — never commit a dead button.
+7. Every link must have a valid destination, never commit a dead button.
 8. Run `npm run check && npm run build` before committing; both must pass.
 
 ## Verification commands

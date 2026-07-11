@@ -4,7 +4,7 @@ summary: A custom wireless split keyboard combining PCB design, 3D-printed mecha
 order: 2
 ---
 
-Tempest Dux is a wireless split keyboard I built on the dux ergonomic lineage (Rae-Dux and Architeuthis Dux), adding a custom PCB and an integrated trackball. It exists because no off-the-shelf board matched the split ergonomics and a built-in pointing device I wanted in one unit. The project spans PCB layout, firmware, and a lot of physical iteration.
+Tempest Dux is a wireless split keyboard I built on [thrly's Tempest](https://github.com/thrly/tempest) and the Rae-Dux / Architeuthis Dux ergonomic lineage, adding a custom PCB and an integrated trackball. It exists because no off-the-shelf board matched the split ergonomics and a built-in pointing device I wanted in one unit. The project spans PCB layout, firmware, and a lot of physical iteration.
 
 ## Why I Built It
 
@@ -20,7 +20,7 @@ The case and plate are 3D printed, and this is where most of the learning happen
 
 ## Firmware
 
-The keyboard runs ZMK, the open-source wireless firmware. That covers the split-half communication, the wireless link, and the keymap. Integrating the trackball meant wiring the pointing device into the firmware so it behaves as a first-class input alongside the keys, not a bolt-on.
+The keyboard runs ZMK, the open-source wireless firmware, on a [Miryoku](https://github.com/manna-harbour/miryoku) base, with [badjeff's PMW3610 driver](https://github.com/badjeff/zmk-pmw3610-driver) for the trackball. That covers the split-half communication, the wireless link, and the keymap. Integrating the trackball meant wiring the pointing device into the firmware so it behaves as a first-class input alongside the keys, not a bolt-on.
 
 ## What It Demonstrates
 

@@ -6,9 +6,10 @@ interface Props {
   description: string;
   ogType?: string;
   structuredData?: object;
+  noindex?: boolean;
 }
 
-const { title, description, ogType = 'website', structuredData } = Astro.props;
+const { title, description, ogType = 'website', structuredData, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og.png', Astro.site);
 const navItems = [
@@ -42,7 +43,11 @@ const personSchema = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? (
+      <meta name="robots" content="noindex, follow" />
+    ) : (
+      <link rel="canonical" href={canonical} />
+    )}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -64,8 +69,8 @@ const personSchema = {
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={title} />
     <meta name="twitter:card" content="summary_large_image" />
-    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
-    {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
+    {!noindex && <script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)} />}
+    {structuredData && <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />}
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
