@@ -43,3 +43,5 @@ The reversible board was the big one. Serving both hands from one flipping desig
 The rest of the next-spin list is small and concrete, which is the sign of a design converging: give the mounting holes real clearance, add labeled test points on the handful of signals you actually end up probing, put a ground pour on both copper faces, and add an optional footprint for the pull-up the trackball wants so it does not have to live in firmware.
 
 Most of the learning was in the parts that did not work the first time. That is the honest case for building something end to end instead of buying it. You find out which of your decisions were right only when the board is in your hand and the display is still blank.
+
+The board and Ergogen source are on GitHub: [samjolley/tempest_dux](https://github.com/samjolley/tempest_dux).

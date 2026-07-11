@@ -24,9 +24,11 @@ The keyboard runs ZMK, the open-source wireless firmware. That covers the split-
 
 ## What It Demonstrates
 
-- end-to-end hardware design, from schematic to working device
+- hardware design from layout to working device
 - PCB layout discipline on a non-trivial board
 - iterative mechanical design with rapid 3D-printed prototyping
 - embedded firmware work and input-device integration
 
-<!-- TODO: add GitHub repository URL and project photos once Sam selects them. -->
+The board files and Ergogen source are on GitHub at [samjolley/tempest_dux](https://github.com/samjolley/tempest_dux). Full build write-up: [Building the Tempest Dux](/writing/building-the-tempest-dux/).
+
+<!-- TODO: add project photos once Sam selects them. -->
