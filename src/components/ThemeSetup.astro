@@ -1,0 +1,61 @@
+<script is:inline>
+  (() => {
+    const storageKey = 'samjolley-theme';
+    const darkThemeColor = '#211f1c';
+    const lightThemeColor = '#f7f3eb';
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const explicitTheme = () => {
+      try {
+        const value = window.localStorage.getItem(storageKey);
+        return value === 'light' || value === 'dark' ? value : null;
+      } catch {
+        return null;
+      }
+    };
+
+    const systemTheme = () => (mediaQuery.matches ? 'dark' : 'light');
+    const themeColor = (theme) => (theme === 'dark' ? darkThemeColor : lightThemeColor);
+
+    const getThemeMeta = () => {
+      let meta = document.getElementById('samjolley-theme-color');
+      if (!(meta instanceof HTMLMetaElement)) {
+        meta = document.createElement('meta');
+        meta.id = 'samjolley-theme-color';
+        meta.name = 'theme-color';
+        document.head.append(meta);
+      }
+      return meta;
+    };
+
+    const applyTheme = (theme) => {
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+      getThemeMeta().content = themeColor(theme);
+      window.dispatchEvent(new CustomEvent('samjolleythemechange', { detail: { theme } }));
+    };
+
+    const applyPreferredTheme = () => applyTheme(explicitTheme() ?? systemTheme());
+
+    window.__samjolleyTheme = {
+      get: () => document.documentElement.dataset.theme || systemTheme(),
+      set: (theme) => {
+        if (theme !== 'light' && theme !== 'dark') return;
+        try {
+          window.localStorage.setItem(storageKey, theme);
+        } catch {
+          // Storage can be unavailable in private or restricted contexts.
+        }
+        applyTheme(theme);
+      },
+    };
+
+    applyPreferredTheme();
+    mediaQuery.addEventListener('change', () => {
+      if (!explicitTheme()) applyTheme(systemTheme());
+    });
+    window.addEventListener('storage', (event) => {
+      if (event.key === storageKey) applyPreferredTheme();
+    });
+  })();
+</script>

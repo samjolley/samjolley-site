@@ -1,0 +1,35 @@
+<button
+  class="theme-toggle"
+  type="button"
+  hidden
+  aria-pressed="false"
+  aria-label="Dark theme"
+>
+  Dark theme
+</button>
+
+<script is:inline>
+  (() => {
+    const button = document.querySelector('.theme-toggle');
+    const theme = window.__samjolleyTheme;
+
+    if (!button || !theme) return;
+
+    const updateButton = (value) => {
+      const isDark = value === 'dark';
+      button.setAttribute('aria-pressed', String(isDark));
+    };
+
+    updateButton(theme.get());
+    button.hidden = false;
+
+    button.addEventListener('click', () => {
+      const nextTheme = theme.get() === 'dark' ? 'light' : 'dark';
+      theme.set(nextTheme);
+    });
+
+    window.addEventListener('samjolleythemechange', (event) => {
+      updateButton(event.detail.theme);
+    });
+  })();
+</script>

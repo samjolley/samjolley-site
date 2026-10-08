@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import PrototypeGallery from '../../components/PrototypeGallery.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -37,6 +38,7 @@ const structuredData = {
     <div class="work-body">
       <Content />
     </div>
+    {item.id === 'tempest-dux' && <PrototypeGallery />}
     <p class="back"><a href="/work/">&larr; All work</a></p>
   </article>
 </Base>
