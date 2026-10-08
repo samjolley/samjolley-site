@@ -1,0 +1,13 @@
+---
+const photos=[
+{file:'tempest-dux-workbench-overview.jpg',alt:'Wide desk view of Tempest Dux prototypes with blue and yellow trackballs.',caption:'The prototypes on my desk.'},
+{file:'tempest-dux-yellow-trackball-detail.jpg',alt:'Close view of a yellow trackball, black keycaps, a printed mount, and display wiring.',caption:'Trackball mount, key layout, and display wiring.'},
+{file:'tempest-dux-blue-trackball.jpg',alt:'Tempest Dux prototype with a blue number-two trackball and printed supports.',caption:'The blue-trackball prototype.'},
+{file:'tempest-dux-yellow-trackball-context.jpg',alt:'Yellow-trackball prototype on my desk beside a separate trackball mouse.',caption:'A closer look at the prototype on my desk.'}
+];
+---
+<section class="prototype-gallery" aria-labelledby="prototype-photos-title">
+<p class="eyebrow">From my desk</p><h2 id="prototype-photos-title">The prototype, up close</h2>
+<p class="gallery-intro">Real parts, printed mounts, and the details between the drawing and the build.</p>
+<div class="gallery-grid">{photos.map(p=><figure><a href={p.file === 'tempest-dux-workbench-overview.jpg' ? '/photos/tempest-dux-desk/' : '/photos/'+p.file} target="_blank" rel="noopener" aria-label={'Open full-size photo: '+p.caption}><img class:list={{'desk-overview-crop': p.file === 'tempest-dux-workbench-overview.jpg'}} src={'/photos/'+p.file} alt={p.alt} width="1280" height="960" loading="lazy" /></a><figcaption>{p.caption} <span>Tap to enlarge.</span></figcaption></figure>)}</div>
+</section>

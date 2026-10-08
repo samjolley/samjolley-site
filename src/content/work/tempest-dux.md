@@ -1,34 +1,23 @@
 ---
 title: Tempest Dux
-summary: A custom wireless split keyboard combining PCB design, 3D-printed mechanical iteration, ZMK firmware, and an integrated trackball.
+summary: A wireless split keyboard with a trackball on each half, a modified PCB, 3D-printed parts, and ZMK firmware.
 order: 2
 ---
 
-Tempest Dux is a wireless split keyboard I built on [thrly's Tempest](https://github.com/thrly/tempest) and the Rae-Dux / Architeuthis Dux ergonomic lineage, adding a custom PCB and an integrated trackball. It exists because no off-the-shelf board matched the split ergonomics and a built-in pointing device I wanted in one unit. The project spans PCB layout, firmware, and a lot of physical iteration.
+I wanted a low-profile split keyboard with trackballs built in, so I could type and move the pointer without reaching for a separate mouse. Tempest Dux is what I've been building to make that happen.
 
-## Why I Built It
+## What went into it
 
-I wanted a single device that combined a split ergonomic layout with an integrated trackball, so my hands could stay in one place for both typing and pointing. That combination, in the exact form factor I wanted, was not something I could buy. Building it was also a way to work through a full hardware project: layout, PCB, enclosure, and firmware, rather than just one slice of it.
+The ergonomics come from the dux family, Rae-Dux and Architeuthis Dux, and the PCB started from [thrly's Tempest](https://github.com/thrly/tempest). I used Ergogen to define the key positions and generate the starting board, then moved into KiCad for routing and checks.
 
-## PCB Design
+The current build uses 3D-printed plates in a layered stack with a TPU gasket. The keyboard runs ZMK, with [Manna Harbour's Miryoku](https://github.com/manna-harbour/miryoku) providing the keymap structure and Hands Down Gold as the alpha layer. The trackball driver is [badjeff's PMW3610 module](https://github.com/badjeff/zmk-pmw3610-driver).
 
-The board is a custom PCB, laid out with Ergogen and finished in KiCad. The work here was the unglamorous part that decides whether everything else functions: switch matrix layout, controller and trackball placement, power and wireless considerations, and routing that stays sane on a hand-shaped outline. The design went through several revisions as I corrected footprints, spacing, and placement choices that only became obvious once parts were in hand.
+## Where it's at
 
-## Mechanical Iteration
+Both halves are typing and both trackballs are working. I still need to add the left display.
 
-The case and plate are 3D printed, and this is where most of the learning happened. Early prints failed in instructive ways: tolerances that were too tight, mounting points that flexed, and clearances that did not account for the trackball assembly. Each revision fixed a specific problem the previous one revealed. Printing the parts myself made that loop fast and cheap.
+It wasn't as seamless and plug 'n play as I was hoping, but I learned a ton! I'm working on the next iteration, including dedicated socket headers for the trackball and display, clearer silkscreen labels, and better clearance around the trackballs. I'll probably panelize the boards so each side is more or less mirrored but intentionally designed.
 
-## Firmware
+[Read the build story](/writing/building-the-tempest-dux/) for the assembly, troubleshooting, and lessons behind those changes.
 
-The keyboard runs ZMK, the open-source wireless firmware, on a [Miryoku](https://github.com/manna-harbour/miryoku) base, with [badjeff's PMW3610 driver](https://github.com/badjeff/zmk-pmw3610-driver) for the trackball. That covers the split-half communication, the wireless link, and the keymap. Integrating the trackball meant wiring the pointing device into the firmware so it behaves as a first-class input alongside the keys, not a bolt-on.
-
-## What It Demonstrates
-
-- hardware design from layout to working device
-- PCB layout discipline on a non-trivial board
-- iterative mechanical design with rapid 3D-printed prototyping
-- embedded firmware work and input-device integration
-
-The board files and Ergogen source are on GitHub at [samjolley/tempest_dux](https://github.com/samjolley/tempest_dux). Full build write-up: [Building the Tempest Dux](/writing/building-the-tempest-dux/).
-
-<!-- TODO: add project photos once Sam selects them. -->
+Earlier project history is on GitHub at [samjolley/tempest_dux](https://github.com/samjolley/tempest_dux).

@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import ThemeSetup from '../components/ThemeSetup.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 
 interface Props {
   title: string;
@@ -18,7 +20,6 @@ const navItems = [
   { href: '/writing/', label: 'Writing' },
   { href: '/about/', label: 'About' },
 ];
-const currentPath = Astro.url.pathname.replace(/\/?$/, '/');
 
 const personSchema = {
   '@context': 'https://schema.org',
@@ -34,11 +35,13 @@ const personSchema = {
   // sameAs: list only live profiles. Add each as it is claimed.
   sameAs: ['https://github.com/samjolley', 'https://www.linkedin.com/in/samjolley'],
 };
----
 
+const current = Astro.url.pathname.replace(/\/?$/, '/');
+const nav = navItems;
+---
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
@@ -51,7 +54,8 @@ const personSchema = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#14605f" />
+    <meta id="samjolley-theme-color" name="theme-color" content="#f7f3eb" />
+    <ThemeSetup />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link
       rel="alternate"
@@ -72,40 +76,20 @@ const personSchema = {
     {!noindex && <script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)} />}
     {structuredData && <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />}
   </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <div class="wrap">
-        <a class="site-name" href="/">Sam Jolley</a>
-        <nav class="site-nav" aria-label="Main navigation">
-          <ul>
-            {
-              navItems.map((item) => (
-                <li>
-                  <a
-                    href={item.href}
-                    aria-current={currentPath === item.href ? 'page' : undefined}
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <main id="main" class="wrap">
-      <slot />
-    </main>
-    <footer class="site-footer">
-      <div class="wrap">
-        <p>&copy; {new Date().getFullYear()} Sam Jolley</p>
-        <p>
-          <a href="mailto:hello@zerobeatlabs.org">hello@zerobeatlabs.org</a>
-          &middot; <a href="/privacy/">Privacy</a>
-        </p>
-      </div>
-    </footer>
-  </body>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header wrap">
+    <a class="site-name" href="/">Sam Jolley</a>
+    <nav class="site-nav" aria-label="Main navigation"><ul>
+    {nav.map(item=><li><a href={item.href} aria-current={(item.href==='/'?current==='/':current.startsWith(item.href))?'page':undefined}>{item.label}</a></li>)}
+    </ul></nav>
+    <ThemeToggle />
+  </header>
+  <main id="main" class="wrap" tabindex="-1"><slot /></main>
+  <footer class="site-footer wrap">
+    <div><a class="footer-name" href="/">Sam Jolley</a><p>Projects, systems, and useful lessons.</p></div>
+    <div class="footer-links"><a href="/writing/">Writing</a><a href="/links/">Find me elsewhere</a><a href="https://zerobeatlabs.org/">ZeroBeatLabs</a><a href="/privacy/">Privacy</a></div>
+    <p class="fine-print">© {new Date().getFullYear()} Sam Jolley</p>
+  </footer>
+</body>
 </html>

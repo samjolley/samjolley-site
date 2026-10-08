@@ -1,7 +1,8 @@
 ---
-title: "Building the Tempest Dux: a split keyboard with an integrated trackball"
-description: A build log for a wireless split keyboard on the dux ergonomic lineage, with a custom KiCad PCB, an integrated PMW3610 trackball, 3D-printed plates, and ZMK firmware bring-up.
+title: "Building the Tempest Dux: a split keyboard with integrated trackballs"
+description: A build log for a wireless split keyboard on the dux ergonomic lineage, with a custom KiCad PCB, integrated PMW3610 trackballs, 3D-printed plates, and ZMK firmware bring-up.
 pubDate: 2026-07-11
+updatedDate: 2026-10-08
 draft: false
 keywords:
   - custom split keyboard build
@@ -10,38 +11,50 @@ keywords:
   - zmk firmware
 ---
 
-I wanted one device that did two things at once: a split ergonomic layout for typing, and a pointing device built into the same unit so my hands never leave home position to reach a mouse. Boards that pair the two exist, but none in the split low-profile layout I wanted, so I built my own.
+**October update:** The assembled keyboard now has both halves typing and both trackballs working. I still need to add the left display. This article includes what I learned getting to that point.
 
-I did not start from a blank page, and I want to be clear about that. The ergonomics come from the dux family, Rae-Dux and Architeuthis Dux, with visual and naming cues from [thrly's Tempest](https://github.com/thrly/tempest). The firmware base is [Manna Harbour's Miryoku](https://github.com/manna-harbour/miryoku) for ZMK, and the trackball driver is [badjeff's PMW3610 module](https://github.com/badjeff/zmk-pmw3610-driver). What I designed on top of that lineage is the part this log is about: a custom PCB, the trackball integration, the plates and case, and the ZMK firmware that makes it one keyboard.
+I wanted a low-profile split keyboard with trackballs built in, so I could type and move the pointer without reaching for a separate mouse. Tempest Dux is what I've been building to make that happen.
+
+I did not start from a blank page, and I want to be clear about that. The ergonomics come from the dux family, Rae-Dux and Architeuthis Dux, and the PCB started from [thrly's Tempest](https://github.com/thrly/tempest). The firmware runs ZMK, with [Manna Harbour's Miryoku](https://github.com/manna-harbour/miryoku) providing the keymap structure and Hands Down Gold as the alpha layer. The trackball driver is [badjeff's PMW3610 module](https://github.com/badjeff/zmk-pmw3610-driver). What I changed and built on top of that lineage is the part this log is about: my PCB modifications, the trackball integration, the plates and case, and the ZMK firmware that makes it one keyboard.
 
 ## The PCB
 
-The board starts in Ergogen and finishes in KiCad. Ergogen turns a declarative layout config into a footprint-populated board, which is the right tool when the whole point is a hand-shaped outline with column stagger and splay that you will revise many times. KiCad then handles the routing and the physical checks.
+I used Ergogen to define the key positions and generate the starting board, then moved into KiCad for routing and checks.
 
-Two decisions shaped the early boards. The first was making the design reversible, one board file that serves both hands by flipping. That is elegant on paper and it was a mistake in practice, which I will come back to. The second was where the trackball goes. The PMW3610 sensor sits on the right half, and its socket, the bearings, and the printed housing all have to share space with the switches and the nice!nano v2 controller without colliding. Placing that cluster and routing around it was most of the interesting work on the board.
+I also had to make room for the trackball hardware around the switches and the nice!nano v2 controller. The sensor, bearings, and printed holder all need space, and the current build has a trackball on each half.
 
-The matrix itself was the least glamorous and most necessary part: a diode per switch, each wired to the correct row and column and checked pad by pad. There is no schematic in this flow. The Ergogen config is the source of truth, so the real check is that config and then the board's design-rule check, which I ran until it passed with no errors and no unconnected items.
+Each switch has a diode and connects to a row and column in the keyboard matrix. I checked those connections, but I didn't have a schematic for this version. I checked the Ergogen config and ran KiCad's design-rule checks. There were still plenty of problems to find during assembly and troubleshooting.
 
 ## Mechanical iteration
 
-The plates and case are 3D printed, and this is where most of the learning happened, because the physical world does not care what the model says.
+For the current build, I'm using 3D-printed plates in a layered stack with a TPU gasket. That's assembled and screwed together now, but the trackball holders needed more work.
 
-The trackball housing was the hardest fit. The sensor, the bearings, and the ball have real clearances, and the case screws thread directly into printed plastic, so a tolerance that looks fine on screen binds or rattles in the hand. Each print revealed one specific problem, and each revision fixed that one thing. One later board version even carried a stray full-circle arc in the bottom-plate outline, left over from re-filleting the trackball cutout, which I fixed by not re-filleting that outline again. The mounting holes taught the same lesson in miniature: I had specified them at exactly 2.0 mm, which is zero clearance for a 2 mm screw, so they bind. The next spin gives them room.
+One version of the holder for the 38 mm pool balls fit pretty well, except the rear wall hit the outer bottom key switch. The right ball also brushed the innermost thumb key, so I clipped the corner off that keycap to give it more room.
+
+For the next version, I want to sort out that clearance in the design so I can use an unmodified keycap. That means checking the fit with the actual switches and keycaps in place, including when the keys are pressed.
 
 ## Firmware and bring-up
 
-The keyboard runs ZMK. That covers the split-half link, the keymap, and the display, and it is also where integrating the trackball got interesting.
+The keyboard runs ZMK, using Miryoku for the keymap structure and Hands Down Gold for the alpha layer. Getting it running took more than building and flashing the firmware. I also had to check what the controller was doing and whether its signals were actually reaching the display and trackball.
 
-When the fabricated boards arrived, the matrix worked, the nice!view display was blank, and the trackball was dead. None of those were the failure they first looked like. The display was blank even though the SPI bus was sending data every cycle, because the signals were not reaching the glass through the reversible-footprint solder jumpers. The trackball produced no driver output at all, which made it a build and device-tree problem before it was a hardware one: the module had to be in the firmware build, the sensor's pins mapped to the real board netlist rather than a stale table I had written earlier, and one specific gotcha handled. The sensor's chip-select landed on a pin that defaults to NFC duty, so the firmware has to be told to use it as a plain GPIO. The interrupt line also needed a pull-up in firmware, because the resistor for it is unpopulated on the breakout.
+On the first prototype set, two display signals were present at the controller but weren't reaching the display header. On the second set, the right trackball moved backwards on both axes and needed a different firmware build to match its sensor orientation.
 
-Writing the pin map down wrong once, and then trusting the copper instead of my own notes, was the moment the project stopped being a drawing and started being a real thing I had to debug.
+Keeping track of which build belonged on which half became part of the job. For the next version, I want to simplify that so there's one firmware build per side, with the pin mappings and hardware differences clearly documented.
 
 ## What I would do differently
 
-The reversible board was the big one. Serving both hands from one flipping design meant every through-hole pin carried a stub net that connected only through an SMD jumper you had to bridge by hand, twenty-eight of them per board, before anything worked. It is clever and it is not worth it. Version 0.7 drops the reversible architecture entirely and simply has a left file and a right file.
+Making the board reversible added a lot of complexity for my first stab at designing/modifying a PCB. I had to keep track of multiple nets and how the connections changed depending on which jumpers were bridged. Then there were the display and trackball PCBs. Getting the connection order, routing, and orientation right was really difficult.
 
-The rest of the next-spin list is small and concrete, which is the sign of a design converging: give the mounting holes real clearance, add labeled test points on the handful of signals you actually end up probing, put a ground pour on both copper faces, and add an optional footprint for the pull-up the trackball wants so it does not have to live in firmware.
+The Tempest PCB design was excellent, but I really barreled into this project and made major changes that ended up breaking a few things. I got it working, but it took hours of frustrating troubleshooting across many sessions, with several months-long breaks along the way.
 
-Most of the learning was in the parts that did not work the first time. That is the honest case for building something end to end instead of buying it. You find out which of your decisions were right only when the board is in your hand and the display is still blank.
+I can't tell you how many times I soldered diodes backwards or got the order of connections mixed up on the display and trackball headers. I even swapped the GND and VIN connections between one of the trackball PCBs and the Tempest Dux PCB. That was a potentially dangerous mistake. Things weren't working on that side, and then I noticed the controller getting hot 😬.
 
-The board and Ergogen source are on GitHub: [samjolley/tempest_dux](https://github.com/samjolley/tempest_dux).
+It wasn't as seamless and plug 'n play as I was hoping, but I learned a ton! Now that I've gone through assembly and have both halves typing and tracking, I'm working on the next iteration. A few things I want to change:
+
+- I'll probably panelize the boards so each side is more or less mirrored but intentionally designed.
+- Dedicated socket headers for the trackball and display.
+- Clearer silkscreen labels and instructions!
+
+I'm trying to focus on the process of creating a new thing: first make it exist, then make it work, then make it beautiful.
+
+Earlier project history is on GitHub at [samjolley/tempest_dux](https://github.com/samjolley/tempest_dux).
