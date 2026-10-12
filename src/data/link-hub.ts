@@ -48,6 +48,7 @@ export const personalLinkGroups: LinkGroup[] = [
     links: [
       { label: 'Sam Jolley on GitHub', href: 'https://github.com/samjolley', kind: 'external' },
       { label: 'Sam Jolley on LinkedIn', href: 'https://www.linkedin.com/in/samjolley', kind: 'external' },
+      { label: 'Sam Jolley on YouTube', href: 'https://www.youtube.com/@SamJolley', kind: 'external' },
     ],
   },
   {

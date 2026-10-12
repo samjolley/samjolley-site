@@ -33,7 +33,7 @@ const personSchema = {
     url: 'https://zerobeatlabs.org',
   },
   // sameAs: list only live profiles. Add each as it is claimed.
-  sameAs: ['https://github.com/samjolley', 'https://www.linkedin.com/in/samjolley'],
+  sameAs: ['https://github.com/samjolley', 'https://www.linkedin.com/in/samjolley', 'https://www.youtube.com/@SamJolley'],
 };
 
 const current = Astro.url.pathname.replace(/\/?$/, '/');
@@ -88,7 +88,7 @@ const nav = navItems;
   <main id="main" class="wrap" tabindex="-1"><slot /></main>
   <footer class="site-footer wrap">
     <div><a class="footer-name" href="/">Sam Jolley</a><p>Projects, systems, and useful lessons.</p></div>
-    <div class="footer-links"><a href="/writing/">Writing</a><a href="/links/">Find me elsewhere</a><a href="https://zerobeatlabs.org/">ZeroBeatLabs</a><a href="/privacy/">Privacy</a></div>
+    <div class="footer-links"><a href="/writing/">Writing</a><a href="https://www.youtube.com/@SamJolley">YouTube</a><a href="/links/">Find me elsewhere</a><a href="https://zerobeatlabs.org/">ZeroBeatLabs</a><a href="/privacy/">Privacy</a></div>
     <p class="fine-print">© {new Date().getFullYear()} Sam Jolley</p>
   </footer>
 </body>
