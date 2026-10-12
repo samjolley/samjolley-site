@@ -8,3 +8,4 @@
 
 /* Top 720px of the original 1280x960 photo: preserve both halves and stands. */
 img.desk-overview-crop,.gallery-grid img.desk-overview-crop{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:center top}
+.video-card{display:block;max-width:720px;margin-bottom:18px}.video-card img{width:100%}.video-card+h3 a{color:var(--color-ink);text-decoration:none}
